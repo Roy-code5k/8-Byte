@@ -2,7 +2,8 @@
 // Re-export API_BASE from config so all other modules import from utils.js
 // (no circular deps — config.js has no imports)
 // ─────────────────────────────────────────────────────────────────────────────
-export { API_BASE } from './config.js';
+import { API_BASE } from './config.js';
+export { API_BASE };
 
 // GLOBAL UTILITY: LOADING STATE MANAGEMENT
 export function setButtonLoading(button, isLoading) {
