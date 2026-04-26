@@ -24,7 +24,7 @@ A powerful, feature-rich social networking application built with **Django** and
 - **Professional Profile**: Showcase Education, Experience, and Skills.
 - **Social Links**: Integrated Instagram, LinkedIn, and GitHub links.
 - **Dynamic Avatar**: Upload custom avatars or use generated fallbacks.
-- **Activity Status**: Real-time tracking of user presence.
+
 
 ### 📸 Media & Gallery
 - **Photo Gallery**: Upload and share photos with captions.
