@@ -180,35 +180,32 @@ class ProfileDetailView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self):
-        # If a specific username is requested (public profile view), return that user's profile
-        username = self.request.query_params.get('username')
-        if username:
-            user = get_object_or_404(User, username__iexact=username, is_active=True)
-            return get_object_or_404(Profile, user=user)
-        # Otherwise return the logged-in user's own profile (dashboard edit)
+        # Only allow viewing other profiles via ?username= for GET requests
+        if self.request.method == 'GET':
+            username = self.request.query_params.get('username')
+            if username:
+                user = get_object_or_404(User, username__iexact=username, is_active=True)
+                return get_object_or_404(Profile, user=user)
+
+        # For all other methods (PATCH, PUT, or GET without param), 
+        # strictly return the logged-in user's own profile
         if not self.request.user.is_authenticated:
             from rest_framework.exceptions import NotAuthenticated
-            raise NotAuthenticated('Authentication required to view your own profile.')
+            raise NotAuthenticated('Authentication required.')
         return self.request.user.profile
 
     def update(self, request, *args, **kwargs):
-        # Updates are always on the logged-in user's own profile only
-        if not request.user.is_authenticated:
-            from rest_framework.exceptions import NotAuthenticated
-            raise NotAuthenticated()
-        profile = request.user.profile
+        # get_object() already ensures we only get the logged-in user's profile for PATCH
+        profile = self.get_object()
 
         # If a new avatar is being uploaded, delete the old one from S3 first
-        # to prevent orphaned files from accumulating in storage
         if 'avatar' in request.FILES and profile.avatar:
             try:
-                profile.avatar.delete(save=False)  # delete old file from S3
+                profile.avatar.delete(save=False)
             except Exception as e:
                 print(f"[WARN] Could not delete old avatar: {e}")
 
-        kwargs['partial'] = True  # Always treat as PATCH (partial update)
-        # Force get_object to return the logged-in user's own profile during update
-        self.kwargs.pop('username', None)
+        kwargs['partial'] = True  # Always treat as PATCH
         return super().update(request, *args, **kwargs)
 
 # -------------------------------------------------------------
