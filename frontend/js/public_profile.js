@@ -1,7 +1,7 @@
 import { API_BASE } from './utils.js';
 
 export function initPublicProfile() {
-    const isStaticPage = window.location.pathname.endsWith('/public_profile.html');
+    const isStaticPage = window.location.pathname.endsWith('/public_profile.html') || window.location.pathname.endsWith('/public_profile');
     const isLegacyPath = window.location.pathname.includes('/u/');
     if (!isStaticPage && !isLegacyPath) return;
 

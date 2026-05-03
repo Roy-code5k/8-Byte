@@ -5,7 +5,7 @@ export function initDashboard() {
     // PART 3: DASHBOARD LOGIC (EDIT PROFILE & GALLERY)
     // -------------------------------------------------------------
     const path = window.location.pathname;
-    if (path.endsWith('/dashboard.html') || path.includes('/dashboard/')) {
+    if (path.endsWith('/dashboard.html') || path.endsWith('/dashboard') || path.includes('/dashboard/')) {
 
         const token = localStorage.getItem('access');
         if (!token) window.location.href = '/index.html'; // Redirect if not logged in

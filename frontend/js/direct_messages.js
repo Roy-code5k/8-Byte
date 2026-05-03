@@ -69,7 +69,7 @@ const ALL_EMOJIS = [
 ];
 
 export function initDirectMessages() {
-    if (!window.location.pathname.includes('/direct_messages.html')) return;
+    if (!window.location.pathname.includes('/direct_messages.html') && !window.location.pathname.endsWith('/direct_messages')) return;
 
     const threadsEl = document.getElementById('dm-threads');
     const messagesEl = document.getElementById('dm-messages');
