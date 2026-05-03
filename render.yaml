@@ -3,7 +3,7 @@ services:
     name: 8-byte-backend
     runtime: python
     rootDir: backend
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    buildCommand: "pip install -r requirements.txt && python manage.py migrate --noinput && python manage.py collectstatic --noinput"
     startCommand: "gunicorn core.wsgi"
     envVars:
       - key: PYTHON_VERSION
